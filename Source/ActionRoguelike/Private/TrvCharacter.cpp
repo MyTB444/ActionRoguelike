@@ -8,6 +8,7 @@
 #include "Camera/CameraComponent.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
+#include "GameFramework/CharacterMovementComponent.h"
 
 // Sets default values
 ATrvCharacter::ATrvCharacter()
@@ -18,6 +19,8 @@ ATrvCharacter::ATrvCharacter()
 	SpringArmComp->SetupAttachment(RootComponent);
 	CameraComp = CreateDefaultSubobject<UCameraComponent>("CameraComponent");
 	CameraComp->SetupAttachment(SpringArmComp);
+	GetCharacterMovement() -> bOrientRotationToMovement = true;
+	bUseControllerRotationYaw = false;
 }
 
 // Called when the game starts or when spawned
@@ -36,14 +39,29 @@ void ATrvCharacter::BeginPlay()
 
 void ATrvCharacter::Move(const FInputActionValue& Value)
 {
+	
+
+	FRotator ControlRot = GetControlRotation();
+	ControlRot.Roll = 0.0f;
+	ControlRot.Pitch = 0.0f;
+	
 	FVector2d InputValue = Value.Get<FVector2D>();
-	AddMovementInput(GetActorForwardVector(), InputValue.Y);
+	AddMovementInput(ControlRot.Vector(), InputValue.Y);
+	
+	FVector RightVector = FRotationMatrix(ControlRot).GetScaledAxis(EAxis::Y);
+	AddMovementInput(RightVector, InputValue.X);
+	
+	
 }
 void ATrvCharacter::Look(const FInputActionValue& Value)
 {
-	FVector2d InputValue = Value.Get<FVector2D>();
+	const FVector2D InputValue = Value.Get<FVector2D>();
+	
 	AddControllerYawInput(InputValue.X);
+	AddControllerPitchInput(InputValue.Y);
 }
+void ATrvCharacter::Jump(const FInputActionValue& Value)
+{}
 
 
 // Called every frame
@@ -61,7 +79,8 @@ void ATrvCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 	{
 		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered,this, &ATrvCharacter::Move);
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ATrvCharacter::Look);
-	}
+		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Triggered, this, &ATrvCharacter::Jump);
+	}	
 
 }
 
