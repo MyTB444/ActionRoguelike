@@ -40,7 +40,6 @@ void ATrvCharacter::BeginPlay()
 void ATrvCharacter::Move(const FInputActionValue& Value)
 {
 	
-
 	FRotator ControlRot = GetControlRotation();
 	ControlRot.Roll = 0.0f;
 	ControlRot.Pitch = 0.0f;
@@ -51,7 +50,6 @@ void ATrvCharacter::Move(const FInputActionValue& Value)
 	FVector RightVector = FRotationMatrix(ControlRot).GetScaledAxis(EAxis::Y);
 	AddMovementInput(RightVector, InputValue.X);
 	
-	
 }
 void ATrvCharacter::Look(const FInputActionValue& Value)
 {
@@ -60,9 +58,16 @@ void ATrvCharacter::Look(const FInputActionValue& Value)
 	AddControllerYawInput(InputValue.X);
 	AddControllerPitchInput(InputValue.Y);
 }
-void ATrvCharacter::Jump(const FInputActionValue& Value)
-{}
-
+void ATrvCharacter::PrimaryA()
+{
+	FVector HandLocation = GetMesh()->GetSocketLocation("Muzzle_01");
+	FTransform SpawnTM = FTransform(GetControlRotation(),HandLocation);
+	
+	FActorSpawnParameters SpawnParams;
+	SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+	
+	GetWorld()->SpawnActor<AActor>(ProjectileClass, SpawnTM,  SpawnParams);
+}
 
 // Called every frame
 void ATrvCharacter::Tick(float DeltaTime)
@@ -80,6 +85,7 @@ void ATrvCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered,this, &ATrvCharacter::Move);
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ATrvCharacter::Look);
 		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Triggered, this, &ATrvCharacter::Jump);
+		EnhancedInputComponent->BindAction(PrimaryAttack, ETriggerEvent::Triggered, this, &ATrvCharacter::PrimaryA);
 	}	
 
 }

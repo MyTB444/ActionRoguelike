@@ -21,7 +21,10 @@ protected:
 	virtual void BeginPlay() override;
 	void Move(const FInputActionValue& Value);
 	void Look(const FInputActionValue& Value);
-	void Jump(const FInputActionValue& Value);
+	void PrimaryA();
+
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<AActor> ProjectileClass;
 
 public:
 	virtual void Tick(float DeltaTime) override;
@@ -39,4 +42,6 @@ protected:
 	UInputAction* LookAction;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, Meta = (AllowPrivateAccess = "true"))
 	UInputAction* JumpAction;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, Meta = (AllowPrivateAccess = "true"))
+	UInputAction* PrimaryAttack;
 };
