@@ -3,10 +3,12 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "TrvInteractionComponent.h"
 #include "GameFramework/Character.h"
 #include "TrvCharacter.generated.h"
 class USpringArmComponent;
 class UCameraComponent;
+class UAnimMontage;
 class UInputAction;
 class UInputMappingContext;
 struct FInputActionValue;
@@ -22,9 +24,15 @@ protected:
 	void Move(const FInputActionValue& Value);
 	void Look(const FInputActionValue& Value);
 	void PrimaryA();
-
-	UPROPERTY(EditAnywhere)
+	void PrimaryInteract();
+	void PrimaryA_Elapsed();
+	
+	FTimerHandle TimerHandle_Pa;
+	
+	UPROPERTY(EditAnywhere, Category = "Attack")
 	TSubclassOf<AActor> ProjectileClass;
+	UPROPERTY(EditAnywhere, Category = "Attack")
+	UAnimMontage* AttackAnim;
 
 public:
 	virtual void Tick(float DeltaTime) override;
@@ -34,6 +42,8 @@ protected:
 	USpringArmComponent* SpringArmComp;
 	UPROPERTY(VisibleAnywhere)
 	UCameraComponent* CameraComp;
+	UPROPERTY(VisibleAnywhere)
+	UTrvInteractionComponent* InteractionComp;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, Meta = (AllowPrivateAccess = "true"))
 	UInputMappingContext* DefaultMappingContext;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, Meta = (AllowPrivateAccess = "true"))
@@ -44,4 +54,6 @@ protected:
 	UInputAction* JumpAction;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, Meta = (AllowPrivateAccess = "true"))
 	UInputAction* PrimaryAttack;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, Meta = (AllowPrivateAccess = "true"))
+	UInputAction* Interact;
 };

@@ -9,16 +9,22 @@
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "TrvInteractionComponent.h"
 
 // Sets default values
 ATrvCharacter::ATrvCharacter()
 {
 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
+	
 	SpringArmComp = CreateDefaultSubobject<USpringArmComponent>("Spring Arm Component");
 	SpringArmComp->SetupAttachment(RootComponent);
+	
 	CameraComp = CreateDefaultSubobject<UCameraComponent>("CameraComponent");
 	CameraComp->SetupAttachment(SpringArmComp);
+	
+	InteractionComp = CreateDefaultSubobject<UTrvInteractionComponent>("Interaction Component");
+	
 	GetCharacterMovement() -> bOrientRotationToMovement = true;
 	bUseControllerRotationYaw = false;
 }
@@ -60,6 +66,18 @@ void ATrvCharacter::Look(const FInputActionValue& Value)
 }
 void ATrvCharacter::PrimaryA()
 {
+	PlayAnimMontage(AttackAnim);
+
+	GetWorldTimerManager().SetTimer(TimerHandle_Pa, this, &ATrvCharacter::PrimaryA_Elapsed, 0.2f);
+}
+
+void ATrvCharacter::PrimaryInteract()
+{
+	InteractionComp->PrimaryInteraction();
+}
+
+void ATrvCharacter::PrimaryA_Elapsed()
+{
 	FVector HandLocation = GetMesh()->GetSocketLocation("Muzzle_01");
 	FTransform SpawnTM = FTransform(GetControlRotation(),HandLocation);
 	
@@ -86,6 +104,7 @@ void ATrvCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ATrvCharacter::Look);
 		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Triggered, this, &ATrvCharacter::Jump);
 		EnhancedInputComponent->BindAction(PrimaryAttack, ETriggerEvent::Triggered, this, &ATrvCharacter::PrimaryA);
+		EnhancedInputComponent->BindAction(Interact, ETriggerEvent::Triggered, this, &ATrvCharacter::PrimaryInteract);
 	}	
 
 }
