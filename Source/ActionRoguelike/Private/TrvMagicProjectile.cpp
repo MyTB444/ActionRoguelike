@@ -17,9 +17,6 @@ ATrvMagicProjectile::ATrvMagicProjectile()
 	SphereComponent->SetCollisionProfileName("Projectile");
 	RootComponent = SphereComponent;
 
-	ParticleComponent = CreateDefaultSubobject<UParticleSystemComponent>("EffectComponent");
-	ParticleComponent->SetupAttachment(SphereComponent);
-
 	ProjectileMovement = CreateDefaultSubobject<UProjectileMovementComponent>("MovementComponent");
 	ProjectileMovement->InitialSpeed = 1000.f;
 	ProjectileMovement->bRotationFollowsVelocity = true;
