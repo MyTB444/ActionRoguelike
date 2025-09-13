@@ -10,6 +10,7 @@
 #include "EnhancedInputSubsystems.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "TrvInteractionComponent.h"
+#include "Kismet/KismetMathLibrary.h"
 
 // Sets default values
 ATrvCharacter::ATrvCharacter()
@@ -78,13 +79,34 @@ void ATrvCharacter::PrimaryInteract()
 
 void ATrvCharacter::PrimaryA_Elapsed()
 {
-	FVector HandLocation = GetMesh()->GetSocketLocation("Muzzle_01");
-	FTransform SpawnTM = FTransform(GetControlRotation(),HandLocation);
-	
+	const FVector HandLocation = GetMesh()->GetSocketLocation("Muzzle_01");
+
+	FCollisionObjectQueryParams ObjectQueryParams;
+	ObjectQueryParams.AddObjectTypesToQuery(ECC_WorldDynamic);
+	ObjectQueryParams.AddObjectTypesToQuery(ECC_WorldStatic);
+
 	FActorSpawnParameters SpawnParams;
 	SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 	SpawnParams.Instigator = this;
+
+	const FVector EyeLocation = CameraComp->GetComponentLocation();
+	const FRotator EyeRotation = CameraComp->GetComponentRotation();
+
+	const FVector End = EyeLocation + (EyeRotation.Vector() * 100000);
+
+	FVector Target;
+
+	if (FHitResult Hit; GetWorld() -> LineTraceSingleByObjectType(Hit, EyeLocation, End, ObjectQueryParams))
+	{
+		Target = Hit.Location;
+	}
+	else
+	{
+		Target = Hit.TraceEnd;
+	}
 	
+	const FRotator Rot = UKismetMathLibrary::FindLookAtRotation(HandLocation, Target);
+	const FTransform SpawnTM = FTransform(Rot, HandLocation);
 	GetWorld()->SpawnActor<AActor>(ProjectileClass, SpawnTM,  SpawnParams);
 }
 

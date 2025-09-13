@@ -1,9 +1,8 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
+// ReSharper disable CppPrintfExtraArg
 #include "TrvBarrel.h"
-
-#include "Components/CapsuleComponent.h"
 
 // Sets default values
 ATrvBarrel::ATrvBarrel()
@@ -36,7 +35,15 @@ void ATrvBarrel::OnActorHit(UPrimitiveComponent* HitComponent,
 									const FHitResult& Hit)
 {
 	RadialForceComponent->FireImpulse();
-	DrawDebugSphere(GetWorld(), Hit.ImpactPoint, 50.f, 16, FColor::Green, false, 1.5f);
+
+	
+	UE_LOG(LogTemp, Log, TEXT("RadialForceComponent"));
+	UE_LOG(LogTemp, Warning, TEXT("OtherActor %s, at time %f"), *GetNameSafe(OtherActor), GetWorld()->TimeSeconds);
+
+	FString CombinedString;
+	CombinedString = FString::Printf(TEXT("hit at %s"), *Hit.ImpactPoint.ToString());
+
+	DrawDebugString(GetWorld(), Hit.ImpactPoint, CombinedString, nullptr, FColor::Green, 2.0f, true);
 }
 // Called every frame
 void ATrvBarrel::Tick(float DeltaTime)
