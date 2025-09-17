@@ -3,8 +3,11 @@
 
 #include "TrvMagicProjectile.h"
 
+#include "TrvAttributeComponent.h"
 #include "Components/SphereComponent.h"
 #include "GameFramework/ProjectileMovementComponent.h"
+
+
 
 // Sets default values
 ATrvMagicProjectile::ATrvMagicProjectile()
@@ -14,6 +17,7 @@ ATrvMagicProjectile::ATrvMagicProjectile()
 	
 	SphereComponent = CreateDefaultSubobject<USphereComponent>("SphereComponent");
 	SphereComponent->SetCollisionProfileName("Projectile");
+	SphereComponent->OnComponentBeginOverlap.AddDynamic(this, &ATrvMagicProjectile::OnActorOverlap);
 	RootComponent = SphereComponent;
 
 	ProjectileMovement = CreateDefaultSubobject<UProjectileMovementComponent>("MovementComponent");
@@ -35,4 +39,18 @@ void ATrvMagicProjectile::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 
 }
+void ATrvMagicProjectile::OnActorOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	if (OtherActor)
+	{
+		UTrvAttributeComponent* AttributeComponent = Cast<UTrvAttributeComponent>(OtherActor->GetComponentByClass(UTrvAttributeComponent::StaticClass()));
+		if (AttributeComponent)
+		{
+			AttributeComponent->ApplyHealthChange(-20.0f);
+			Destroy();
+		}
+	}
+}
+
 

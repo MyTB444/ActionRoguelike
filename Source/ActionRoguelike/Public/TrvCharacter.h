@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "TrvAttributeComponent.h"
 #include "TrvInteractionComponent.h"
 #include "GameFramework/Character.h"
 #include "TrvCharacter.generated.h"
@@ -44,6 +45,8 @@ protected:
 	UCameraComponent* CameraComp;
 	UPROPERTY(VisibleAnywhere)
 	UTrvInteractionComponent* InteractionComp;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+	UTrvAttributeComponent* AttributeComponent;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, Meta = (AllowPrivateAccess = "true"))
 	UInputMappingContext* DefaultMappingContext;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, Meta = (AllowPrivateAccess = "true"))

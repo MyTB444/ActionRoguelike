@@ -3,7 +3,7 @@
 
 #include "TrvCharacter.h"
 #include "GameFramework/Character.h"
-
+#include "TrvAttributeComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
 #include "EnhancedInputComponent.h"
@@ -25,6 +25,8 @@ ATrvCharacter::ATrvCharacter()
 	CameraComp->SetupAttachment(SpringArmComp);
 	
 	InteractionComp = CreateDefaultSubobject<UTrvInteractionComponent>("Interaction Component");
+
+	AttributeComponent = CreateDefaultSubobject<UTrvAttributeComponent>("Attribute Component");
 	
 	GetCharacterMovement() -> bOrientRotationToMovement = true;
 	bUseControllerRotationYaw = false;
