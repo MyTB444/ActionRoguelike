@@ -70,16 +70,19 @@ void ATrvCharacter::Look(const FInputActionValue& Value)
 void ATrvCharacter::PrimaryA()
 {
 	PlayAnimMontage(AttackAnim);
-
-	GetWorldTimerManager().SetTimer(TimerHandle_Pa, this, &ATrvCharacter::PrimaryA_Elapsed, 0.2f);
+	FTimerDelegate Del;
+	Del.BindUFunction(this, FName("AttackElapsed"), ProjectileClass);
+	GetWorldTimerManager().SetTimer(TimerHandle_Pa, Del, 0.2f, false);
 }
-
-void ATrvCharacter::PrimaryInteract()
+void ATrvCharacter::SecondaryA()
 {
-	InteractionComp->PrimaryInteraction();
+	PlayAnimMontage(AttackAnim);
+	FTimerDelegate Del;
+	Del.BindUFunction(this, FName("AttackElapsed"), ProjectileClassA);
+	GetWorldTimerManager().SetTimer(TimerHandle_Pa, Del, 0.2f, false);
 }
 
-void ATrvCharacter::PrimaryA_Elapsed()
+void ATrvCharacter::AttackElapsed(const TSubclassOf<AActor> Ammo)
 {
 	const FVector HandLocation = GetMesh()->GetSocketLocation("Muzzle_01");
 
@@ -109,7 +112,11 @@ void ATrvCharacter::PrimaryA_Elapsed()
 	
 	const FRotator Rot = UKismetMathLibrary::FindLookAtRotation(HandLocation, Target);
 	const FTransform SpawnTM = FTransform(Rot, HandLocation);
-	GetWorld()->SpawnActor<AActor>(ProjectileClass, SpawnTM,  SpawnParams);
+	GetWorld()->SpawnActor<AActor>(Ammo, SpawnTM,  SpawnParams);
+}
+void ATrvCharacter::PrimaryInteract()
+{
+	InteractionComp->PrimaryInteraction();
 }
 
 // Called every frame
@@ -129,6 +136,7 @@ void ATrvCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ATrvCharacter::Look);
 		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Triggered, this, &ATrvCharacter::Jump);
 		EnhancedInputComponent->BindAction(PrimaryAttack, ETriggerEvent::Triggered, this, &ATrvCharacter::PrimaryA);
+		EnhancedInputComponent->BindAction(SecondaryAttack, ETriggerEvent::Triggered, this, &ATrvCharacter::SecondaryA);
 		EnhancedInputComponent->BindAction(Interact, ETriggerEvent::Triggered, this, &ATrvCharacter::PrimaryInteract);
 	}	
 

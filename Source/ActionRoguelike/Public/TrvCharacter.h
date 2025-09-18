@@ -24,14 +24,19 @@ protected:
 	virtual void BeginPlay() override;
 	void Move(const FInputActionValue& Value);
 	void Look(const FInputActionValue& Value);
-	void PrimaryA();
 	void PrimaryInteract();
-	void PrimaryA_Elapsed();
+	void PrimaryA();
+	void SecondaryA();
+	UFUNCTION()
+	void AttackElapsed(TSubclassOf<AActor> Ammo);
+	
 	
 	FTimerHandle TimerHandle_Pa;
 	
 	UPROPERTY(EditAnywhere, Category = "Attack")
 	TSubclassOf<AActor> ProjectileClass;
+	UPROPERTY(EditAnywhere, Category = "Attack")
+	TSubclassOf<AActor> ProjectileClassA;
 	UPROPERTY(EditAnywhere, Category = "Attack")
 	UAnimMontage* AttackAnim;
 
@@ -57,6 +62,8 @@ protected:
 	UInputAction* JumpAction;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, Meta = (AllowPrivateAccess = "true"))
 	UInputAction* PrimaryAttack;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, Meta = (AllowPrivateAccess = "true"))
+	UInputAction* SecondaryAttack;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, Meta = (AllowPrivateAccess = "true"))
 	UInputAction* Interact;
 };
