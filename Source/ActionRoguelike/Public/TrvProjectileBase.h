@@ -40,6 +40,7 @@ protected:
 	// BlueprintCallable to allow child classes to trigger explosions
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void Explode();
+	virtual void Explode_Implementation();
 
 	virtual void PostInitializeComponents() override;
 	

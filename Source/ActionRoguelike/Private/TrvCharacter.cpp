@@ -81,6 +81,13 @@ void ATrvCharacter::SecondaryA()
 	Del.BindUFunction(this, FName("AttackElapsed"), ProjectileClassA);
 	GetWorldTimerManager().SetTimer(TimerHandle_Pa, Del, 0.2f, false);
 }
+void ATrvCharacter::DashA()
+{
+	PlayAnimMontage(AttackAnim);
+	FTimerDelegate Del;
+	Del.BindUFunction(this, FName("AttackElapsed"), DashProjectile);
+	GetWorldTimerManager().SetTimer(TimerHandle_Pa, Del, 0.2f, false);
+}
 
 void ATrvCharacter::AttackElapsed(const TSubclassOf<AActor> Ammo)
 {
@@ -137,6 +144,7 @@ void ATrvCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Triggered, this, &ATrvCharacter::Jump);
 		EnhancedInputComponent->BindAction(PrimaryAttack, ETriggerEvent::Triggered, this, &ATrvCharacter::PrimaryA);
 		EnhancedInputComponent->BindAction(SecondaryAttack, ETriggerEvent::Triggered, this, &ATrvCharacter::SecondaryA);
+		EnhancedInputComponent->BindAction(DashAttack, ETriggerEvent::Triggered, this, &ATrvCharacter::DashA);
 		EnhancedInputComponent->BindAction(Interact, ETriggerEvent::Triggered, this, &ATrvCharacter::PrimaryInteract);
 	}	
 

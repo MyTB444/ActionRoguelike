@@ -27,6 +27,7 @@ protected:
 	void PrimaryInteract();
 	void PrimaryA();
 	void SecondaryA();
+	void DashA();
 	UFUNCTION()
 	void AttackElapsed(TSubclassOf<AActor> Ammo);
 	
@@ -38,7 +39,10 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "Attack")
 	TSubclassOf<AActor> ProjectileClassA;
 	UPROPERTY(EditAnywhere, Category = "Attack")
+	TSubclassOf<AActor> DashProjectile;
+	UPROPERTY(EditAnywhere, Category = "Attack")
 	UAnimMontage* AttackAnim;
+	
 
 public:
 	virtual void Tick(float DeltaTime) override;
@@ -64,6 +68,8 @@ protected:
 	UInputAction* PrimaryAttack;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, Meta = (AllowPrivateAccess = "true"))
 	UInputAction* SecondaryAttack;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, Meta = (AllowPrivateAccess = "true"))
+	UInputAction* DashAttack;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, Meta = (AllowPrivateAccess = "true"))
 	UInputAction* Interact;
 };
