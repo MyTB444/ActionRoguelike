@@ -11,6 +11,11 @@ UTrvAttributeComponent::UTrvAttributeComponent()
 	// ...
 }
 
+bool UTrvAttributeComponent::IsAlive () const
+{
+	return Health > 0.0f;
+}
+
 
 // Called when the game starts
 

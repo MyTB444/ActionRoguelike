@@ -45,6 +45,11 @@ void ATrvCharacter::BeginPlay()
 	}
 	
 }
+void ATrvCharacter::PostInitializeComponents()
+{
+	Super::PostInitializeComponents();
+	AttributeComponent->OnHealthChange.AddDynamic(this, &ATrvCharacter::OnHealthChange);
+}
 
 void ATrvCharacter::Move(const FInputActionValue& Value)
 {
@@ -121,7 +126,18 @@ void ATrvCharacter::AttackElapsed(const TSubclassOf<AActor> Ammo)
 	const FTransform SpawnTM = FTransform(Rot, HandLocation);
 	GetWorld()->SpawnActor<AActor>(Ammo, SpawnTM,  SpawnParams);
 }
-void ATrvCharacter::PrimaryInteract()
+
+void ATrvCharacter::OnHealthChange(AActor* Intistigator, UTrvAttributeComponent* OwningComp, float NewHealth,
+	float Delta)
+{
+	if (NewHealth <= 0.0f && Delta <= 0.0f)
+	{
+		APlayerController *PC = Cast<APlayerController>(GetController());
+		DisableInput(PC);
+	}
+}
+
+void ATrvCharacter::PrimaryInteract() 
 {
 	InteractionComp->PrimaryInteraction();
 }

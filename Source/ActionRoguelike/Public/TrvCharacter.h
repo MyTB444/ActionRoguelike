@@ -30,6 +30,9 @@ protected:
 	void DashA();
 	UFUNCTION()
 	void AttackElapsed(TSubclassOf<AActor> Ammo);
+	UFUNCTION()
+	void OnHealthChange(AActor* Intistigator, UTrvAttributeComponent* OwningComp, float NewHealth, float Delta);
+	virtual void PostInitializeComponents() override;
 	
 	
 	FTimerHandle TimerHandle_Pa;
