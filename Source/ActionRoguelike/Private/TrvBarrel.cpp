@@ -7,7 +7,7 @@
 // Sets default values
 ATrvBarrel::ATrvBarrel()
 {
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	StaticMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>("StaticMesh_Component");
 	StaticMeshComponent->SetSimulatePhysics(true);
 	RootComponent = StaticMeshComponent;
@@ -29,14 +29,14 @@ void ATrvBarrel::BeginPlay()
 }
 
 void ATrvBarrel::OnActorHit(UPrimitiveComponent* HitComponent,
-									AActor* OtherActor,
-									UPrimitiveComponent* OtherComp,
-									FVector NormalImpulse,
-									const FHitResult& Hit)
+                            AActor* OtherActor,
+                            UPrimitiveComponent* OtherComp,
+                            FVector NormalImpulse,
+                            const FHitResult& Hit)
 {
 	RadialForceComponent->FireImpulse();
 
-	
+
 	UE_LOG(LogTemp, Log, TEXT("RadialForceComponent"));
 	UE_LOG(LogTemp, Warning, TEXT("OtherActor %s, at time %f"), *GetNameSafe(OtherActor), GetWorld()->TimeSeconds);
 
@@ -45,9 +45,9 @@ void ATrvBarrel::OnActorHit(UPrimitiveComponent* HitComponent,
 
 	DrawDebugString(GetWorld(), Hit.ImpactPoint, CombinedString, nullptr, FColor::Green, 2.0f, true);
 }
+
 // Called every frame
 void ATrvBarrel::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 }
-

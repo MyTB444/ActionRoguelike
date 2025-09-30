@@ -23,5 +23,5 @@ class ACTIONROGUELIKE_API ITrvGameplayInterface
 	// Add interface functions to this class. This is the class that will be inherited to implement this interface.
 public:
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
-	void Interact (APawn* Pawn);
+	void Interact(APawn* Pawn);
 };

@@ -12,7 +12,8 @@ class ACTIONROGUELIKE_API ATrvChest : public AActor, public ITrvGameplayInterfac
 {
 	GENERATED_BODY()
 	void Interact_Implementation(APawn* Pawn);
-public:	
+
+public:
 	// Sets default values for this actor's properties
 	ATrvChest();
 
@@ -22,14 +23,14 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-	
+
 	UPROPERTY(VisibleAnywhere)
 	UStaticMeshComponent* BaseMesh;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	UStaticMeshComponent* LidMesh;
 
-public:	
+public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 };

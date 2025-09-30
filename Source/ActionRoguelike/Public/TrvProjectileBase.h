@@ -1,4 +1,3 @@
-
 #pragma once
 
 #include "CoreMinimal.h"
@@ -14,8 +13,8 @@ UCLASS(ABSTRACT)
 class ACTIONROGUELIKE_API ATrvProjectileBase : public AActor
 {
 	GENERATED_BODY()
-	
-public:	
+
+public:
 	// Sets default values for this actor's properties
 	ATrvProjectileBase();
 
@@ -34,7 +33,8 @@ protected:
 	UParticleSystemComponent* EffectComp;
 
 	UFUNCTION()
-	virtual void OnActorHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
+	virtual void OnActorHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp,
+	                        FVector NormalImpulse, const FHitResult& Hit);
 
 	// BlueprintNativeEvent = C++ base implementation, can be expanded in Blueprints
 	// BlueprintCallable to allow child classes to trigger explosions
@@ -43,5 +43,4 @@ protected:
 	virtual void Explode_Implementation();
 
 	virtual void PostInitializeComponents() override;
-	
 };

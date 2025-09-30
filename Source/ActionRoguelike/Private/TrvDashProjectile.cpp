@@ -11,7 +11,7 @@ void ATrvDashProjectile::BeginPlay()
 {
 	Super::BeginPlay();
 	UE_LOG(LogTemp, Log, TEXT("RadialForceComponent"));
-	GetWorld()->GetTimerManager().SetTimer(TimerHandle, this,&ATrvDashProjectile::DestroyTime, 0.2f, false);
+	GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &ATrvDashProjectile::DestroyTime, 0.2f, false);
 }
 
 void ATrvDashProjectile::TpGideon()
@@ -29,6 +29,7 @@ void ATrvDashProjectile::DestroyTime()
 	ThisLocation = GetActorLocation();
 	Explode();
 }
+
 void ATrvDashProjectile::Explode_Implementation()
 {
 	GetWorldTimerManager().ClearTimer(TimerHandle);
@@ -41,6 +42,6 @@ void ATrvDashProjectile::Explode_Implementation()
 	SetActorEnableCollision(false);
 
 	FTimerHandle TimerHandle2;
-	GetWorld()->GetTimerManager().SetTimer(TimerHandle2, this,&ATrvDashProjectile::TpGideon, 0.2f, false);
+	GetWorld()->GetTimerManager().SetTimer(TimerHandle2, this, &ATrvDashProjectile::TpGideon, 0.2f, false);
 	//Super::Explode_Implementation();
 }

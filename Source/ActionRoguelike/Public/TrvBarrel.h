@@ -12,8 +12,8 @@ UCLASS()
 class ACTIONROGUELIKE_API ATrvBarrel : public AActor
 {
 	GENERATED_BODY()
-	
-public:	
+
+public:
 	// Sets default values for this actor's properties
 	ATrvBarrel();
 
@@ -26,15 +26,14 @@ protected:
 
 	UFUNCTION()
 	void OnActorHit(UPrimitiveComponent* HitComponent,
-				   AActor* OtherActor,
-				   UPrimitiveComponent* OtherComp,
-				   FVector NormalImpulse,
-				   const FHitResult& Hit);
-	
+	                AActor* OtherActor,
+	                UPrimitiveComponent* OtherComp,
+	                FVector NormalImpulse,
+	                const FHitResult& Hit);
+
 	virtual void BeginPlay() override;
 
-public:	
+public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
-
 };

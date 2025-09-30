@@ -13,6 +13,7 @@ class UAnimMontage;
 class UInputAction;
 class UInputMappingContext;
 struct FInputActionValue;
+
 UCLASS()
 class ACTIONROGUELIKE_API ATrvCharacter : public ACharacter
 {
@@ -20,6 +21,7 @@ class ACTIONROGUELIKE_API ATrvCharacter : public ACharacter
 
 public:
 	ATrvCharacter();
+
 protected:
 	virtual void BeginPlay() override;
 	void Move(const FInputActionValue& Value);
@@ -33,10 +35,10 @@ protected:
 	UFUNCTION()
 	void OnHealthChange(AActor* Intistigator, UTrvAttributeComponent* OwningComp, float NewHealth, float Delta);
 	virtual void PostInitializeComponents() override;
-	
-	
+
+
 	FTimerHandle TimerHandle_Pa;
-	
+
 	UPROPERTY(EditAnywhere, Category = "Attack")
 	TSubclassOf<AActor> ProjectileClass;
 	UPROPERTY(EditAnywhere, Category = "Attack")
@@ -45,11 +47,11 @@ protected:
 	TSubclassOf<AActor> DashProjectile;
 	UPROPERTY(EditAnywhere, Category = "Attack")
 	UAnimMontage* AttackAnim;
-	
 
 public:
 	virtual void Tick(float DeltaTime) override;
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
 protected:
 	UPROPERTY(VisibleAnywhere)
 	USpringArmComponent* SpringArmComp;

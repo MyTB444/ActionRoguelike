@@ -6,7 +6,7 @@
 // Sets default values
 ATrvTargetDummy::ATrvTargetDummy()
 {
- 	StaticMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("StaticMesh"));
+	StaticMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("StaticMesh"));
 	RootComponent = StaticMesh;
 
 	TrvAttributeComponent = CreateDefaultSubobject<UTrvAttributeComponent>(TEXT("TrvAttributeComponent"));
@@ -14,12 +14,10 @@ ATrvTargetDummy::ATrvTargetDummy()
 }
 
 void ATrvTargetDummy::OnHealthChange(AActor* Intistigator, UTrvAttributeComponent* OwningComp, float NewHealth,
-	float Delta)
+                                     float Delta)
 {
-	if (Delta < 0.0f){
+	if (Delta < 0.0f)
+	{
 		StaticMesh->SetScalarParameterValueOnMaterials("TimeToHit", GetWorld()->GetTimeSeconds());
 	}
 }
-
-
-

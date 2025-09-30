@@ -6,12 +6,11 @@
 // Sets default values for this component's properties
 UTrvAttributeComponent::UTrvAttributeComponent()
 {
-
 	Health = 100;
 	// ...
 }
 
-bool UTrvAttributeComponent::IsAlive () const
+bool UTrvAttributeComponent::IsAlive() const
 {
 	return Health > 0.0f;
 }
@@ -25,11 +24,9 @@ bool UTrvAttributeComponent::ApplyHealthChange(float Delta)
 	Health += Delta;
 
 	OnHealthChange.Broadcast(nullptr, this, Health, Delta);
-	
+
 	return true;
 }
 
 
 // Called every frame
-
-

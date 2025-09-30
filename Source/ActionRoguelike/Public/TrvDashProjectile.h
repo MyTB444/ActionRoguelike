@@ -22,5 +22,4 @@ protected:
 	void DestroyTime();
 	virtual void Explode_Implementation() override;
 	void TpGideon();
-	
 };

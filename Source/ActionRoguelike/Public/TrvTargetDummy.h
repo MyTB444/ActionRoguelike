@@ -11,8 +11,8 @@ UCLASS()
 class ACTIONROGUELIKE_API ATrvTargetDummy : public AActor
 {
 	GENERATED_BODY()
-	
-public:	
+
+public:
 	// Sets default values for this actor's properties
 	ATrvTargetDummy();
 
@@ -26,5 +26,4 @@ protected:
 
 	UFUNCTION()
 	void OnHealthChange(AActor* Intistigator, UTrvAttributeComponent* OwningComp, float NewHealth, float Delta);
-	
 };

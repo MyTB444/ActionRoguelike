@@ -5,22 +5,23 @@
 #include "Components/SphereComponent.h"
 
 
-
 // Sets default values
 ATrvMagicProjectile::ATrvMagicProjectile()
 {
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	SphereComp->SetSphereRadius(20.0f);
 	SphereComp->OnComponentBeginOverlap.AddDynamic(this, &ATrvMagicProjectile::OnActorOverlap);
 	DamageAmount = 20.0f;
 }
 
 void ATrvMagicProjectile::OnActorOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
-	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+                                         UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep,
+                                         const FHitResult& SweepResult)
 {
 	if (OtherActor && OtherActor != GetInstigator())
 	{
-		UTrvAttributeComponent* AttributeComponent = Cast<UTrvAttributeComponent>(OtherActor->GetComponentByClass(UTrvAttributeComponent::StaticClass()));
+		UTrvAttributeComponent* AttributeComponent = Cast<UTrvAttributeComponent>(
+			OtherActor->GetComponentByClass(UTrvAttributeComponent::StaticClass()));
 		if (AttributeComponent)
 		{
 			AttributeComponent->ApplyHealthChange(-DamageAmount);
@@ -28,5 +29,3 @@ void ATrvMagicProjectile::OnActorOverlap(UPrimitiveComponent* OverlappedComponen
 		}
 	}
 }
-
-

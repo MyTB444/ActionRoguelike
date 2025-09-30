@@ -5,7 +5,7 @@
 // Sets default values
 ATrvChest::ATrvChest()
 {
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
 	BaseMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("BaseMesh"));
@@ -21,17 +21,15 @@ ATrvChest::ATrvChest()
 void ATrvChest::BeginPlay()
 {
 	Super::BeginPlay();
-	
 }
 
 // Called every frame
 void ATrvChest::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
 }
+
 void ATrvChest::Interact_Implementation(APawn* Pawn)
 {
 	LidMesh->SetRelativeRotation(FRotator(TargetPitch, 0, 0));
 }
-

@@ -24,11 +24,11 @@ ATrvProjectileBase::ATrvProjectileBase()
 	MoveComp->bInitialVelocityInLocalSpace = true;
 	MoveComp->ProjectileGravityScale = 0.0f;
 	MoveComp->InitialSpeed = 8000;
-
 }
 
 
-void ATrvProjectileBase::OnActorHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
+void ATrvProjectileBase::OnActorHit(UPrimitiveComponent* HitComponent, AActor* OtherActor,
+                                    UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
 	Explode();
 }
@@ -39,16 +39,15 @@ void ATrvProjectileBase::Explode_Implementation()
 {
 	// Check to make sure we aren't already being 'destroyed'
 	// Adding ensure to see if we encounter this situation at all
-	
-		UGameplayStatics::SpawnEmitterAtLocation(this, ImpactVFX, GetActorLocation(), GetActorRotation());
 
-		EffectComp->DeactivateSystem();
+	UGameplayStatics::SpawnEmitterAtLocation(this, ImpactVFX, GetActorLocation(), GetActorRotation());
 
-		MoveComp->StopMovementImmediately();
-		SetActorEnableCollision(false);
+	EffectComp->DeactivateSystem();
 
-		Destroy();
-	
+	MoveComp->StopMovementImmediately();
+	SetActorEnableCollision(false);
+
+	Destroy();
 }
 
 void ATrvProjectileBase::PostInitializeComponents()
@@ -56,8 +55,3 @@ void ATrvProjectileBase::PostInitializeComponents()
 	Super::PostInitializeComponents();
 	//SphereComp->IgnoreActorWhenMoving(GetInstigator(), true);
 }
-
-
-
-
-
