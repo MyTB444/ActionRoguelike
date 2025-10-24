@@ -3,25 +3,33 @@
 
 #include "AI/TrvAICharacter.h"
 
-#include "Perception/AIPerceptionComponent.h"
+#include "AI/TrvAIController.h"
+#include "BehaviorTree/BlackboardComponent.h"
+
 
 // Sets default values
 ATrvAICharacter::ATrvAICharacter()
 {
-	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PerceptionComp = CreateDefaultSubobject<UAIPerceptionComponent>(TEXT("PerceptionComp"));
+	SensComp = CreateDefaultSubobject<UPawnSensingComponent>(TEXT("SensComp"));
 }
 
-// Called when the game starts or when spawned
-void ATrvAICharacter::BeginPlay()
+void ATrvAICharacter::PostInitializeComponents()
 {
-	Super::BeginPlay();
+	Super::PostInitializeComponents();
+	SensComp->OnSeePawn.AddDynamic(this, &ATrvAICharacter::OnPawnSeen);
 }
 
-// Called every frame
-void ATrvAICharacter::Tick(float DeltaTime)
+void ATrvAICharacter::OnPawnSeen(APawn* Pawn)
 {
-	Super::Tick(DeltaTime);
+	ATrvAIController* AIC = Cast<ATrvAIController>(GetController());
+	if (AIC)
+	{
+		UBlackboardComponent* BBC = AIC->GetBlackboardComponent();
+		BBC->SetValueAsObject("TargetActor", Pawn);
+
+		DrawDebugString(GetWorld(), GetActorLocation(),"PLAYER_SPOTTED", nullptr, FColor::White, 4.0f, true);
+	}
 }
+
 
 // Called to bind functionality to input

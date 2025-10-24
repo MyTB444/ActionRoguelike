@@ -11,12 +11,11 @@ void ATrvAIController::BeginPlay()
 {
 	Super::BeginPlay();
 
-	RunBehaviorTree(BehaviorTree);
-
-	APawn* mypawn = UGameplayStatics::GetPlayerPawn(this, 0);
-	if (mypawn)
+	if (ensureMsgf(BehaviorTree, TEXT("BehaviorTree is NUll! Assign behavior tree")))
 	{
-		GetBlackboardComponent()->SetValueAsVector("MoveToLocation", mypawn->GetActorLocation());
-		GetBlackboardComponent()->SetValueAsObject("TargetActor", mypawn);
+		RunBehaviorTree(BehaviorTree);
 	}
+	
+	RunBehaviorTree(BehaviorTree);
+	
 }

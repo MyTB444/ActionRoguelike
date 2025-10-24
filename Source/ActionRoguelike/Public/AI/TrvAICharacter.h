@@ -4,6 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "Perception/PawnSensingComponent.h"
+
 #include "TrvAICharacter.generated.h"
 
 UCLASS()
@@ -16,15 +18,14 @@ public:
 	ATrvAICharacter();
 
 protected:
-	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
 
-	UPROPERTY(VisibleAnywhere)
-	TObjectPtr<UAIPerceptionComponent> PerceptionComp;
+	virtual void PostInitializeComponents() override;
 
-public:
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
+	UPROPERTY(VisibleAnywhere, Category = "Components")
+	UPawnSensingComponent* SensComp;
 
+	UFUNCTION()
+	void OnPawnSeen(APawn* Pawn);
+	
 	// Called to bind functionality to input
 };
