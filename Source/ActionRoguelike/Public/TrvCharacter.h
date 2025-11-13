@@ -25,7 +25,7 @@ public:
 protected:
 	virtual void BeginPlay() override;
 	void Move(const FInputActionValue& Value);
-	void Look(const FInputActionValue& Vaue)
+	void Look(const FInputActionValue& Vaue);
 	void PrimaryInteract();
 	void PrimaryA();
 	void SecondaryA();
