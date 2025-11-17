@@ -24,7 +24,7 @@ void ATrvMagicProjectile::OnActorOverlap(UPrimitiveComponent* OverlappedComponen
 			OtherActor->GetComponentByClass(UTrvAttributeComponent::StaticClass()));
 		if (AttributeComponent)
 		{
-			AttributeComponent->ApplyHealthChange(-DamageAmount);
+			AttributeComponent->ApplyHealthChange(GetInstigator(), -DamageAmount);
 			Explode();
 		}
 	}

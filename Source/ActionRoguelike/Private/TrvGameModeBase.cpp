@@ -3,9 +3,13 @@
 
 #include "TrvGameModeBase.h"
 
+#include "EngineUtils.h"
+#include "TrvAttributeComponent.h"
+#include "AI/TrvAICharacter.h"
 #include "EnvironmentQuery/EnvQueryManager.h"
 #include "EnvironmentQuery/EnvQueryTypes.h"
 #include  "EnvironmentQuery/EnvQueryInstanceBlueprintWrapper.h"
+#include "Net/Core/Analytics/NetStatsUtils.h"
 
 
 ATrvGameModeBase::ATrvGameModeBase()
@@ -23,6 +27,25 @@ void ATrvGameModeBase::StartPlay()
 
 void ATrvGameModeBase::SpawnTimerElapsed()
 {
+	int NrOfAliveBots = 0;
+	for (TActorIterator<ATrvAICharacter> IT(GetWorld()); IT; ++IT)
+	{
+		ATrvAICharacter* Bot = *IT;
+		UTrvAttributeComponent* AttComp = UTrvAttributeComponent::GetAttributes(Bot);
+		if (AttComp && AttComp->IsAlive())
+		{
+			NrOfAliveBots++;
+		}
+	}
+	float MaxBot = 10.0f;
+	if (DifficultyCurve)
+	{
+		MaxBot = DifficultyCurve->GetFloatValue(GetWorld()->TimeSeconds);
+	}
+	if (NrOfAliveBots > MaxBot)
+	{
+		return;
+	}
 	UEnvQueryInstanceBlueprintWrapper* QueryInstance = UEnvQueryManager::RunEQSQuery(
 		this, SpawnBotQuery, this, EEnvQueryRunMode::RandomBest5Pct, nullptr);
 	if (ensure(QueryInstance))
@@ -40,5 +63,6 @@ void ATrvGameModeBase::OnQueryCompleted(UEnvQueryInstanceBlueprintWrapper* Query
 		FActorSpawnParameters SpawnParams;
 		SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 		GetWorld()->SpawnActor<AActor>(MinionClass, Locations[0], FRotator::ZeroRotator, SpawnParams);
+		DrawDebugSphere(GetWorld(), Locations[0], 50.0f, 20, FColor::Blue, false, 60.0f);
 	}
 }

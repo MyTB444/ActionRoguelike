@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "TrvAttributeComponent.h"
 #include "GameFramework/Character.h"
 #include "Perception/PawnSensingComponent.h"
 
@@ -23,9 +24,20 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, Category = "Components")
 	UPawnSensingComponent* SensComp;
+	
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+	UTrvAttributeComponent* AttributeComponent;
+	
+	UPROPERTY(VisibleAnywhere, Category = "Components")
+	FName TimeToHitParamName;
 
 	UFUNCTION()
 	void OnPawnSeen(APawn* Pawn);
+	
+	UFUNCTION()
+	void OnHealthChange(AActor* Intistigator, UTrvAttributeComponent* OwningComp, float NewHealth, float Delta);
+	
+	void SetTargetActor(AActor* TargetActor);
 	
 	// Called to bind functionality to input
 };

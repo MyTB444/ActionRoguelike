@@ -4,8 +4,14 @@
 #include "AI/TrvBTTaskRangedAttack.h"
 
 #include "AIController.h"
+#include "TrvAttributeComponent.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "GameFramework/Character.h"
+
+UTrvBTTaskRangedAttack::UTrvBTTaskRangedAttack()
+{
+	MaxBulletSpread = 2.0f;
+}
 
 EBTNodeResult::Type UTrvBTTaskRangedAttack::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
 {
@@ -23,15 +29,25 @@ EBTNodeResult::Type UTrvBTTaskRangedAttack::ExecuteTask(UBehaviorTreeComponent& 
 		{
 			return EBTNodeResult::Failed;
 		}
+
+		if (!UTrvAttributeComponent::IsActorAlive(Target))
+		{
+			return EBTNodeResult::Failed;
+		}
 		FVector Direction = Target->GetActorLocation() - MuzzleLocation;
 		FRotator Rotation = Direction.Rotation();
 
+		Rotation.Pitch += FMath::RandRange(0.0f, MaxBulletSpread);
+		Rotation.Yaw += FMath::RandRange(-MaxBulletSpread, MaxBulletSpread);
+
 		FActorSpawnParameters SpawnParameters;
 		SpawnParameters.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+		SpawnParameters.Instigator = MyChar;
 
-		AActor* newProj = OwnerComp.GetWorld()->SpawnActor<AActor>(ProjectileClass, MuzzleLocation, Rotation, SpawnParameters);
+		AActor* NewProj = OwnerComp.GetWorld()->SpawnActor<AActor>(ProjectileClass, MuzzleLocation, Rotation,
+		                                                           SpawnParameters);
 
-		return newProj ? EBTNodeResult::Succeeded : EBTNodeResult::Failed;
+		return NewProj ? EBTNodeResult::Succeeded : EBTNodeResult::Failed;
 	}
 	return EBTNodeResult::Failed;
 }

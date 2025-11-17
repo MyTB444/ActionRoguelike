@@ -25,6 +25,9 @@ protected:
 	float SpawnTimerInterval;
 	
 	UPROPERTY(EditDefaultsOnly, Category = "AI")
+	UCurveFloat* DifficultyCurve;
+	
+	UPROPERTY(EditDefaultsOnly, Category = "AI")
 	TSubclassOf<AActor> MinionClass;
 
 	UFUNCTION()

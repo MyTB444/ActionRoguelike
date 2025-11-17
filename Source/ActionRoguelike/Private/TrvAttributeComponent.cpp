@@ -3,6 +3,7 @@
 
 #include "TrvAttributeComponent.h"
 
+
 // Sets default values for this component's properties
 UTrvAttributeComponent::UTrvAttributeComponent()
 {
@@ -19,13 +20,32 @@ bool UTrvAttributeComponent::IsAlive() const
 // Called when the game starts
 
 
-bool UTrvAttributeComponent::ApplyHealthChange(float Delta)
+bool UTrvAttributeComponent::ApplyHealthChange(AActor* InstigatorActor, float Delta)
 {
 	Health += Delta;
 
-	OnHealthChange.Broadcast(nullptr, this, Health, Delta);
+	OnHealthChange.Broadcast(InstigatorActor, this, Health, Delta);
 
 	return true;
+}
+
+UTrvAttributeComponent* UTrvAttributeComponent::GetAttributes(AActor* FromActor)
+{
+	if (FromActor)
+	{
+		return Cast<UTrvAttributeComponent>(FromActor->GetComponentByClass(UTrvAttributeComponent::StaticClass()));
+	}
+	return nullptr;
+}
+
+bool UTrvAttributeComponent::IsActorAlive(AActor* FromActor)
+{
+	UTrvAttributeComponent* AttributeComponent = GetAttributes(FromActor);
+	if (AttributeComponent)
+	{
+		return AttributeComponent->IsAlive();
+	}
+	return false;
 }
 
 

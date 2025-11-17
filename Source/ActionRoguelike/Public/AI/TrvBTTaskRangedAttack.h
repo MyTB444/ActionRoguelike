@@ -18,5 +18,11 @@ class ACTIONROGUELIKE_API UTrvBTTaskRangedAttack : public UBTTaskNode
 
 protected:
 	UPROPERTY(EditAnywhere, Category = "AI")
+	float MaxBulletSpread;
+
+	UPROPERTY(EditAnywhere, Category = "AI")
 	TSubclassOf<AActor> ProjectileClass;
+
+public:
+	UTrvBTTaskRangedAttack();
 };

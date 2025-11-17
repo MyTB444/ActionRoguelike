@@ -16,6 +16,12 @@ class ACTIONROGUELIKE_API UTrvAttributeComponent : public UActorComponent
 
 public:
 	// Sets default values for this component's properties
+	UFUNCTION(BlueprintCallable, Category = "Attributes")
+	static UTrvAttributeComponent* GetAttributes(AActor* FromActor);
+	
+	UFUNCTION(BlueprintCallable, Category = "Attributes", meta = (DisplayName = "IsAlive"))
+	static bool IsActorAlive(AActor* FromActor);
+	
 	UTrvAttributeComponent();
 
 protected:
@@ -31,7 +37,7 @@ public:
 	FOnHealthChange OnHealthChange;
 
 	UFUNCTION(BlueprintCallable, Category = "Attributes")
-	bool ApplyHealthChange(float Delta);
+	bool ApplyHealthChange(AActor* InstigatorActor, float Delta);
 
 	// Called every frame
 };
