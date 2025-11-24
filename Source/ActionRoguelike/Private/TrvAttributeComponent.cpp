@@ -8,6 +8,7 @@
 UTrvAttributeComponent::UTrvAttributeComponent()
 {
 	Health = 100;
+	MaxHealth = 100;
 	// ...
 }
 

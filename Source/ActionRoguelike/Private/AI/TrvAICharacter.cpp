@@ -5,8 +5,10 @@
 
 #include "BrainComponent.h"
 #include "TrvAttributeComponent.h"
+#include "TRVWorldUserWidget.h"
 #include "AI/TrvAIController.h"
 #include "BehaviorTree/BlackboardComponent.h"
+#include "Blueprint/UserWidget.h"
 
 
 // Sets default values
@@ -49,6 +51,15 @@ void ATrvAICharacter::OnHealthChange(AActor* Intistigator, UTrvAttributeComponen
 		if (Intistigator != this)
 		{
 			SetTargetActor(Intistigator);
+		}
+		if (ActiveHealthBar == nullptr)
+		{
+			ActiveHealthBar = CreateWidget<UTRVWorldUserWidget>(GetWorld(), HealthBarWidgetClass);
+			if (ActiveHealthBar)
+			{
+				ActiveHealthBar->AttachedActor = this;
+				ActiveHealthBar->AddToViewport();
+			}
 		}
 		GetMesh()->SetScalarParameterValueOnMaterials(TimeToHitParamName, GetWorld()->TimeSeconds);
 		if (NewHealth <= 0.0f)

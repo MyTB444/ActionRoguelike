@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "TrvAttributeComponent.h"
+#include "TRVWorldUserWidget.h"
 #include "GameFramework/Character.h"
 #include "Perception/PawnSensingComponent.h"
 
@@ -19,6 +20,12 @@ public:
 	ATrvAICharacter();
 
 protected:
+	
+	UPROPERTY()
+	UTRVWorldUserWidget* ActiveHealthBar;
+	
+	UPROPERTY(EditDefaultsOnly, Category = "UI")
+	TSubclassOf<UUserWidget> HealthBarWidgetClass;
 
 	virtual void PostInitializeComponents() override;
 
