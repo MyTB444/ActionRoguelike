@@ -24,6 +24,19 @@ void ATrvGameModeBase::StartPlay()
 	                                SpawnTimerInterval, true);
 }
 
+void ATrvGameModeBase::KillALl()
+{
+	for (TActorIterator<ATrvAICharacter> IT(GetWorld()); IT; ++IT)
+	{
+		ATrvAICharacter* Bot = *IT;
+		UTrvAttributeComponent* AttComp = UTrvAttributeComponent::GetAttributes(Bot);
+		if (AttComp && AttComp->IsAlive())
+		{
+			AttComp->Kill(this);
+		}
+	}
+}
+
 
 void ATrvGameModeBase::SpawnTimerElapsed()
 {

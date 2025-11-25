@@ -23,11 +23,21 @@ bool UTrvAttributeComponent::IsAlive() const
 
 bool UTrvAttributeComponent::ApplyHealthChange(AActor* InstigatorActor, float Delta)
 {
+	if (!GetOwner()->CanBeDamaged())
+	{
+		return false;
+	}
+	
 	Health += Delta;
 
 	OnHealthChange.Broadcast(InstigatorActor, this, Health, Delta);
 
 	return true;
+}
+
+bool UTrvAttributeComponent::Kill(AActor* Intistigator)
+{
+	return ApplyHealthChange(Intistigator, -MaxHealth);
 }
 
 UTrvAttributeComponent* UTrvAttributeComponent::GetAttributes(AActor* FromActor)

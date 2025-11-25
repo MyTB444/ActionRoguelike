@@ -41,6 +41,9 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "Attributes")
 	bool ApplyHealthChange(AActor* InstigatorActor, float Delta);
+	
+	UFUNCTION(Blueprintable)
+	bool Kill(AActor* Intistigator);
 
 	// Called every frame
 };

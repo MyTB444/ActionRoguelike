@@ -51,6 +51,9 @@ protected:
 public:
 	virtual void Tick(float DeltaTime) override;
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+	
+	UFUNCTION(Exec)
+	void HealSelf (float Delta = 100);
 
 protected:
 	UPROPERTY(VisibleAnywhere)

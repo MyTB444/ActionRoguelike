@@ -166,3 +166,8 @@ void ATrvCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 		EnhancedInputComponent->BindAction(Interact, ETriggerEvent::Triggered, this, &ATrvCharacter::PrimaryInteract);
 	}
 }
+
+void ATrvCharacter::HealSelf(const float Delta)
+{
+	AttributeComponent->ApplyHealthChange(this, Delta);
+}
