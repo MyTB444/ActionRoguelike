@@ -9,6 +9,8 @@
 #include "AI/TrvAIController.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "Blueprint/UserWidget.h"
+#include "Components/CapsuleComponent.h"
+#include "GameFramework/CharacterMovementComponent.h"
 
 
 // Sets default values
@@ -17,6 +19,10 @@ ATrvAICharacter::ATrvAICharacter()
 	SensComp = CreateDefaultSubobject<UPawnSensingComponent>(TEXT("SensComp"));
 	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
 	AttributeComponent = CreateDefaultSubobject<UTrvAttributeComponent>("Attribute Component");
+	
+	GetCapsuleComponent()->SetCollisionResponseToChannel(ECC_WorldDynamic, ECR_Ignore);
+	GetMesh()->SetGenerateOverlapEvents(true);
+	
 	TimeToHitParamName = "TimeToHit";
 }
 
@@ -71,6 +77,9 @@ void ATrvAICharacter::OnHealthChange(AActor* Intistigator, UTrvAttributeComponen
 			}
 			GetMesh()->SetAllBodiesSimulatePhysics(true);
 			GetMesh()->SetCollisionProfileName("Ragdoll");
+			
+			GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+			GetCharacterMovement()->DisableMovement();
 			SetLifeSpan(10.0f);
 		}
 	}

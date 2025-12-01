@@ -2,6 +2,7 @@
 
 #include "TrvMagicProjectile.h"
 #include "TrvAttributeComponent.h"
+#include "TrvGameplayFunctionLibrary.h"
 #include "Components/SphereComponent.h"
 
 
@@ -20,11 +21,8 @@ void ATrvMagicProjectile::OnActorOverlap(UPrimitiveComponent* OverlappedComponen
 {
 	if (OtherActor && OtherActor != GetInstigator())
 	{
-		UTrvAttributeComponent* AttributeComponent = Cast<UTrvAttributeComponent>(
-			OtherActor->GetComponentByClass(UTrvAttributeComponent::StaticClass()));
-		if (AttributeComponent)
+		if (UTrvGameplayFunctionLibrary::ApplyDirectionalDamage(GetInstigator(),OtherActor,DamageAmount,SweepResult))
 		{
-			AttributeComponent->ApplyHealthChange(GetInstigator(), -DamageAmount);
 			Explode();
 		}
 	}

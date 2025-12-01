@@ -52,6 +52,11 @@ void ATrvCharacter::PostInitializeComponents()
 	AttributeComponent->OnHealthChange.AddDynamic(this, &ATrvCharacter::OnHealthChange);
 }
 
+FVector ATrvCharacter::GetPawnViewLocation() const
+{
+	return CameraComp->GetComponentLocation();
+}
+
 void ATrvCharacter::Move(const FInputActionValue& Value)
 {
 	FRotator ControlRot = GetControlRotation();

@@ -8,6 +8,9 @@
 #include "Concepts/Iterable.h"
 #include "ProfilingDebugging/CookStats.h"
 
+static TAutoConsoleVariable<bool> CVarDebugDrawInteraction(
+	TEXT("su.DebugDrawInteraction"), false, TEXT("Enable debug lines"), ECVF_Cheat);
+
 // Sets default values for this component's properties
 UTrvInteractionComponent::UTrvInteractionComponent()
 {
@@ -20,6 +23,7 @@ UTrvInteractionComponent::UTrvInteractionComponent()
 
 void UTrvInteractionComponent::PrimaryInteraction()
 {
+	bool bDebugDraw = CVarDebugDrawInteraction.GetValueOnGameThread();
 	FCollisionObjectQueryParams ObjectQueryParams;
 	ObjectQueryParams.AddObjectTypesToQuery(ECC_WorldDynamic);
 
@@ -45,6 +49,10 @@ void UTrvInteractionComponent::PrimaryInteraction()
 
 	for (FHitResult Hit : Hits)
 	{
+		if (bDebugDraw)
+		{
+			DrawDebugSphere(GetWorld(), Hit.ImpactPoint, 30.0f, 32, Color, false, 2.0f);
+		}
 		AActor* HitActor = Hit.GetActor();
 		if (HitActor)
 		{
@@ -55,27 +63,20 @@ void UTrvInteractionComponent::PrimaryInteraction()
 				break;
 			}
 		}
-
-		DrawDebugSphere(GetWorld(), Hit.ImpactPoint, 30.0f, 32, Color, false, 2.0f);
 	}
-	DrawDebugLine(GetWorld(), EyeLocation, End, Color, false, 2.0f, 0, 2.0f);
+	if (bDebugDraw)
+	{
+		DrawDebugLine(GetWorld(), EyeLocation, End, Color, false, 2.0f, 0, 2.0f);
+	}
 }
 
-
-// Called when the game starts
 void UTrvInteractionComponent::BeginPlay()
 {
 	Super::BeginPlay();
-
-	// ...
 }
 
-
-// Called every frame
 void UTrvInteractionComponent::TickComponent(float DeltaTime, ELevelTick TickType,
                                              FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-
-	// ...
 }

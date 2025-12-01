@@ -35,6 +35,7 @@ protected:
 	UFUNCTION()
 	void OnHealthChange(AActor* Intistigator, UTrvAttributeComponent* OwningComp, float NewHealth, float Delta);
 	virtual void PostInitializeComponents() override;
+	virtual FVector GetPawnViewLocation() const override;
 
 
 	FTimerHandle TimerHandle_Pa;
